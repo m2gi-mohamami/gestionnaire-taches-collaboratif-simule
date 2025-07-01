@@ -1,19 +1,22 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import taskRoutes from './routes/taskRoutes.js';
-const app=express();
-app.use(express.json());
-app.use('/api',taskRoutes);
-mongoose.connect('mongodb+srv://mohammediamira12:wV9OnkK5TiPoEJrW@cluster0.cayrkpt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(() => {
+dotenv.config();
+
+mongoose.connect(process.env.MONGO).then(() => {
     console.log('Connected to MongoDB');
 }).catch(err => {
     console.error('MongoDB connection error:', err);
 });
 
-app.get('/',(req,res)=>{
-    res.send('Hello from Node Api server');
-});
-
+const app=express();
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');
 });
+
+app.use(express.json());
+app.get('/',(req,res)=>{
+    res.send('Hello from Node Api server');
+});
+app.use('/api',taskRoutes);

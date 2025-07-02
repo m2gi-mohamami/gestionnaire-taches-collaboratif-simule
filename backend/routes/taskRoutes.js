@@ -12,7 +12,9 @@ router.get('/', (req, res) => {
 });
 
 router.get('/tasks', (req, res) => {
+    
     taskController.getTasks(req, res);
+   
 });
 
 

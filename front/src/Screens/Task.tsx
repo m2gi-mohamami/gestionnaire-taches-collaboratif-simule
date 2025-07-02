@@ -14,11 +14,16 @@ export default function Task({ item }) {
 
     return (
         <View style={{ margin: 10, borderWidth: 2, borderColor: '#ccc', padding: 10, borderRadius: 5 }}>
-            <Text style={{ fontWeight: 'bold' }}>{item.title}</Text>
+            <Text style={{ fontWeight: 'bold'  ,fontSize:19}}>{item.title}</Text>
             <View style={{justifyContent:'space-between', flexDirection: 'row'}}>
-            <Text>{item.description}</Text>
+            
+            <Text style={{color:"green",fontWeight: 'bold' ,fontSize:15}}>{item.status}</Text>
             <Button title="Delete" color="red" onPress={handleDeleteTask} />
             </View>
+
+            <Text style={{ fontWeight: 'bold' }}>
+  {new Date(item.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long' })}
+</Text>
         </View>
     );
 

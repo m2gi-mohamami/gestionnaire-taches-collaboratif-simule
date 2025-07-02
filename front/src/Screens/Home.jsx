@@ -8,17 +8,21 @@ export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [newTaskDescription, setNewTaskDescription] = useState("");
-
+    
+   
     function handleAddTask() {
         const newTask = {
             id: TaskList.length + 1,
             title: newTaskTitle,
             description: newTaskDescription,
+
+
         };
         setTaskList([...TaskList, newTask]);
         setModalVisible(false); // Fermer le modal après l'ajout
         setNewTaskTitle(""); // Réinitialiser les champs
         setNewTaskDescription("");
+        
     }
 
     return (
@@ -26,7 +30,7 @@ export default function Home() {
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Task list:</Text>
             <FlatList
                 data={TaskList}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                     <Task item={item} />
                 )}

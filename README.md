@@ -8,6 +8,7 @@ npm install @react-navigation/native
 npm install @react-navigation/stack
 npm install react-native-gesture-handler
 npm install @react-native-masked-view/masked-view
+npm install axios
 //stylé les composants 
 npm install twrnc
 

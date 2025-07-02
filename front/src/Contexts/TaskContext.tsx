@@ -1,15 +1,23 @@
-import React, { createContext, useContext, useState } from "react";
-
+import axios from 'axios';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Text } from 'react-native';
 export const TaskContext = createContext<any>(null);
-
 export function TaskProvider({ children }: { children: React.ReactNode }) {
-    const [TaskList, setTaskList] = useState([
-        { id: 1, title: "Task 1", description: "Description for Task 1" },
-        { id: 2, title: "Task 2", description: "Description for Task 2" },
-        { id: 3, title: "Task 3", description: "Description for Task 3" },
-    ]);
-
+    const [TaskList, setTaskList] = useState([]);
+    //load tasks from bd
+    const getTasks=async()=>{
+         await axios.get('http://10.0.2.2:3000/api/tasks')
+            .then(response => {
+                setTaskList(response.data);
+            
+             })
+            .catch(error => {console.log(error)})
+    }
+   useEffect(()=>{
+    getTasks();
+   }, []);
     return (
+    
         <TaskContext.Provider value={{ TaskList, setTaskList }}>
             {children}
         </TaskContext.Provider>

@@ -7,7 +7,7 @@
 
 import React from "react";
 import { TaskProvider } from "./src/Contexts/TaskContext";
-import Home from "./Screens/Home";
+import Home from "./src/Screens/Home";
 
 export default function App() {
     return (

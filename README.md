@@ -9,6 +9,7 @@ npm install @react-navigation/stack
 npm install react-native-gesture-handler
 npm install @react-native-masked-view/masked-view
 npm install axios
+npm install react-native-element-dropdown --save
 //stylé les composants 
 npm install twrnc
 
@@ -29,6 +30,6 @@ Configurez l'émulateur et cliquez sur Finish.
 npm run android
 npm start 
 
-coté backend:
+# coté backend:
 npm init -y
 npm install express mongoose dotenv cors body-parser

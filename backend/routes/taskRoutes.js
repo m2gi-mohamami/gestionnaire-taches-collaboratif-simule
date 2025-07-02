@@ -15,11 +15,14 @@ router.get('/tasks', (req, res) => {
     
     taskController.getTasks(req, res);
    
+
 });
 
 
 
 router.post('/tasks', (req, res) => {
-    taskController.createTask(req, res);});
+    taskController.createTask(req, res);
+    console.log('Task created');
+});
 
 export default router;

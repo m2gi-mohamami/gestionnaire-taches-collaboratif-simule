@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import { Button, FlatList, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTaskContext } from "../Contexts/TaskContext";
 import Task from "./Task";
-
 export default function Home() {
     const { TaskList, setTaskList } = useTaskContext();
     const [modalVisible, setModalVisible] = useState(false);
@@ -10,39 +10,62 @@ export default function Home() {
     const [newTaskDescription, setNewTaskDescription] = useState("");
     const statusOptions = ['To Do', 'In Progress', 'Done'];
     const [selectedStatus, setSelectedStatus] = useState(statusOptions[0]); 
-    
+    const [afterDate, setAfterDate] = useState("");
     function handleAddTask() {
         const newTask = {
-            id: TaskList.length + 1,
             title: newTaskTitle,
             description: newTaskDescription,
             status:'To Do',
-            createdAt:new Date().toISOString(),
-
-
-
+            
         };
-        setTaskList([...TaskList, newTask]);
+       
         setModalVisible(false); // Fermer le modal après l'ajout
         setNewTaskTitle(""); // Réinitialiser les champs
         setNewTaskDescription("");
         PostTasks(newTask); // Appeler la fonction pour poster la nouvelle tâche
         
     }
+    const getTasks=async()=>{
+             await axios.get('http://10.0.2.2:3000/api/tasks')
+                .then(response => {
+                    setTaskList(response.data);
+                
+                 })
+                .catch(error => {console.log(error)})
+        }
+       useEffect(()=>{
+        getTasks();
+       }, [TaskList]);
      const PostTasks=async(newTask)=>{
         // Assuming you have an API endpoint to post tasks
-       
+             console.log('Posting new task:', newTask);
+             try {
              await axios.post('http://10.0.2.2:3000/api/tasks',newTask)
-             .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
+             console.log('Task added successfully');
+             getTasks(); 
+             } 
+            catch(error) {
                     console.log(error);
-                });
+            };
         }
-       
+      const filterTasks=async()=>{
+            const afterDate = document.getElementById("afterDate").value;
+            const dateISO = afterDate ? `${afterDate}T00:00:00.000Z` : "";
+             await axios.get(`http://10.0.2.2:3000/api/tasks?after=${dateISO}`)
+                .then(response => {
+                    setTaskList(response.data);
+                
+                 })
+                .catch(error => {console.log(error)})
+        }
     return (
         <View style={{ flex: 1, padding: 20 }}>
+             <TextInput
+                style={styles.input}
+                placeholder="Filtrer après (ex: 2024-07-01)"
+                value={afterDate}
+                onChangeText={setAfterDate}
+            /><Button title="Filter Tasks" onPress={filterTasks}></Button>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Task list:</Text>
             <FlatList
                 data={TaskList}
@@ -75,7 +98,7 @@ export default function Home() {
                             value={newTaskDescription}
                             onChangeText={setNewTaskDescription}
                         />
-                        <
+                        
                         <Button title="Add" onPress={handleAddTask} />
                         <Button title="Cancel" color="red" onPress={() => setModalVisible(false)} />
                     </View>

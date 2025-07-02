@@ -8,13 +8,17 @@ export default function Home() {
     const [modalVisible, setModalVisible] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [newTaskDescription, setNewTaskDescription] = useState("");
+    const statusOptions = ['To Do', 'In Progress', 'Done'];
+    const [selectedStatus, setSelectedStatus] = useState(statusOptions[0]); 
     
-   
     function handleAddTask() {
         const newTask = {
             id: TaskList.length + 1,
             title: newTaskTitle,
             description: newTaskDescription,
+            status:'To Do',
+            createdAt:new Date().toISOString(),
+
 
 
         };
@@ -22,9 +26,21 @@ export default function Home() {
         setModalVisible(false); // Fermer le modal après l'ajout
         setNewTaskTitle(""); // Réinitialiser les champs
         setNewTaskDescription("");
+        PostTasks(newTask); // Appeler la fonction pour poster la nouvelle tâche
         
     }
-
+     const PostTasks=async(newTask)=>{
+        // Assuming you have an API endpoint to post tasks
+       
+             await axios.post('http://10.0.2.2:3000/api/tasks',newTask)
+             .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+       
     return (
         <View style={{ flex: 1, padding: 20 }}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Task list:</Text>
@@ -59,6 +75,7 @@ export default function Home() {
                             value={newTaskDescription}
                             onChangeText={setNewTaskDescription}
                         />
+                        <
                         <Button title="Add" onPress={handleAddTask} />
                         <Button title="Cancel" color="red" onPress={() => setModalVisible(false)} />
                     </View>
